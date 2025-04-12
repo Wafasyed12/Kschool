@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Registration</title>
+<!-- Font Awesome for Eye Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+body {
+	font-family: Arial, sans-serif;
+	background-image: linear-gradient(rgba(4, 9, 30, 0.7),
+		rgba(4, 9, 30, 0.7)),
+		url('data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjU1IDI1NSIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cGF0aCBkPSJNMCAwQzM3Ljc1IDczLjc1IDEzMy4wNSAyMjAuNzUgMjU1IDIyMC43NVYyNTVIMFYwWiIgZmlsbD0iI0YwYTAwYSIvPgo8L3N2Zz4=');
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	height: 100vh;
+}
+
+.front {
+	margin-top: 40px;
+	font-size: 28px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.front .kids {
+	color: yellow;
+}
+
+.front .garden {
+	color: white;
+}
+
+.container {
+	background-color: rgba(255, 255, 255, 0.1);
+	padding: 30px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+	border-radius: 8px;
+	width: 100%;
+	max-width: 400px;
+	margin-top: 60px;
+}
+
+h2 {
+	text-align: center;
+	color: #fff;
+	margin-bottom: 20px;
+}
+
+label {
+	font-size: 16px;
+	color: white;
+	margin-bottom: 5px;
+	display: block;
+}
+
+input[type="text"], input[type="email"], input[type="password"] {
+	width: 100%;
+	padding: 12px;
+	margin: 8px 0 16px 0;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-sizing: border-box;
+	font-size: 14px;
+	color: white;
+	background-color: rgba(0, 0, 0, 0.3);
+}
+
+input:focus {
+	border-color: black;
+	outline: none;
+}
+
+button {
+	width: 100%;
+	padding: 12px;
+	background-color: yellow;
+	color: black;
+	border: none;
+	border-radius: 4px;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+button:hover {
+	background-color: white;
+	color: black;
+	transition: background-color 0.08s ease;
+}
+
+.footer {
+	text-align: center;
+	margin-top: 20px;
+}
+
+.footer a {
+	color: white; /* Change to white */
+	text-decoration: none;
+	font-size: 14px;
+}
+
+.footer a:hover {
+	text-decoration: underline;
+}
+
+.fa, .fa-brands, .fa-duotone, .fa-light, .fa-regular, .fa-solid, .fa-thin, .fab, .fad, .fal, .far, .fas, .fat {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display, inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    margin-bottom: 8px
+    }
+
+.password-container {
+	position: relative;
+}
+
+.password-container input {
+	padding-right: 40px; /* Add space for the eye icon */
+}
+
+.password-container .toggle-password {
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	cursor: pointer;
+	color: #bbb;
+	font-size: 18px;
+}
+
+.password-container .toggle-password:hover {
+	color: #fff;
+}
+
+input::placeholder {
+	color: #bbb; /* Set light gray color for placeholder text */
+}
+
+.error {
+	color: red;
+	font-size: 12px;
+}
+</style>
+</head>
+<body>
+	<div class="front">
+		<span class="kids">Kids</span> <span class="garden">Garden Grammar School</span>
+	</div>
+
+	<div class="container">
+		<h2>Admin Registration</h2>
+		<form id="registrationForm" action="/users/register" method="post">
+			<label for="username"></label> 
+			<input type="text" id="username" name="username" required placeholder="Enter your name">
+			<div id="usernameError" class="error"></div>
+
+			<label for="email"></label> 
+			<input type="email" id="email" name="email" required placeholder="Enter your email">
+			<div id="emailError" class="error"></div>
+
+			<label for="password"></label>
+			<div class="password-container">
+				<input type="password" id="password" name="password" required placeholder="Enter your password">
+				<span class="toggle-password" onclick="togglePassword()">
+					<i class="fas fa-eye-slash" id="eye-icon"></i> <!-- Closed eye by default -->
+				</span>
+			</div>
+			<div id="passwordError" class="error"></div>
+
+			<button type="submit">Register</button>
+		</form>
+
+		<div class="footer">
+			<p>
+				Already have an account? <a href="/users/login">Login here</a>
+			</p>
+		</div>
+	</div>
+
+	<script>
+		function togglePassword() {
+			var passwordField = document.getElementById('password');
+			var eyeIcon = document.getElementById('eye-icon');
+
+			if (passwordField.type === 'password') {
+				passwordField.type = 'text';
+				eyeIcon.classList.remove('fa-eye-slash');
+				eyeIcon.classList.add('fa-eye'); // Open eye
+			} else {
+				passwordField.type = 'password';
+				eyeIcon.classList.remove('fa-eye');
+				eyeIcon.classList.add('fa-eye-slash'); // Closed eye
+			}
+		}
+
+		document.getElementById('registrationForm').addEventListener('submit', function(event) {
+			let isValid = true;
+
+			// Validate username
+			var username = document.getElementById('username').value;
+			if (username.length < 3) {
+				isValid = false;
+				document.getElementById('usernameError').innerText = "Username must be at least 3 characters long.";
+			} else {
+				document.getElementById('usernameError').innerText = "";
+			}
+
+			// Validate email
+			var email = document.getElementById('email').value;
+			var emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+			if (!emailPattern.test(email)) {
+				isValid = false;
+				document.getElementById('emailError').innerText = "Please enter a valid Gmail address (e.g., example@gmail.com).";
+			} else {
+				document.getElementById('emailError').innerText = "";
+			}
+
+			// Validate password
+			var password = document.getElementById('password').value;
+			var passwordPattern = /^(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/;
+			if (!passwordPattern.test(password)) {
+				isValid = false;
+				document.getElementById('passwordError').innerText = "Password must be at least 8 characters long and contain at least one special character.";
+			} else {
+				document.getElementById('passwordError').innerText = "";
+			}
+
+			// Prevent form submission if validation fails
+			if (!isValid) {
+				event.preventDefault();
+			}
+		});
+	</script>
+</body>
+</html>

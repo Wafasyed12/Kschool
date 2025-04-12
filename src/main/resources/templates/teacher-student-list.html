@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student List</title>
+<style>
+/* General styles */
+body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	background: url('/images/dashboard-background.jpg') no-repeat center
+		center fixed;
+	background-size: cover;
+	color: #333;
+	padding-top: 120px; /* Ensure space for the fixed header */
+	padding-bottom: 80px; /* Ensure space for the fixed footer */
+	box-sizing: border-box; /* Include padding in the height calculation */
+}
+
+/* Header section */
+.header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background: rgba(0, 0, 0, 0.5); /* Dark background color */
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 20px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+	z-index: 1000; /* Ensure it stays on top */
+}
+
+/* School name in the top-left corner */
+.school-name {
+	font-size: 22px;
+	font-weight: bold;
+}
+
+.school-name .kids {
+	color: #FFD700; /* Yellow color */
+}
+
+.school-name .garden {
+	color: white; /* White color */
+}
+
+/* User info section in the top-right corner */
+.user-info {
+	font-size: 20px;
+	font-weight: bold;
+	color: white; /* White color */
+	padding-right: 45px;
+}
+
+/* Container for the table */
+.container {
+	max-width: 1000px;
+	margin: 0px auto;
+	background-color: rgba(255, 255, 255, 0.9);
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	overflow: hidden;
+}
+
+h2 {
+	text-align: center;
+	color: #444;
+}
+
+/* Table styles */
+table {
+	width: 100%;
+	border-collapse: collapse; /* Remove space between cells */
+	margin-bottom: 30px;
+	border-radius: 10px;
+	overflow: hidden; /* Ensure border-radius works */
+}
+
+th, td {
+	padding: 13px;
+	text-align: center;
+	border-bottom: 1px solid #ddd; /* Add bottom border to rows */
+}
+
+th {
+	background-color: #343a40; /* Dark background for header */
+	color: white; /* White text for header */
+	font-weight: bold;
+}
+
+/* Add border radius to the first and last header cells */
+th:first-child {
+	border-top-left-radius: 10px; /* Rounded top-left corner */
+}
+
+th:last-child {
+	border-top-right-radius: 10px; /* Rounded top-right corner */
+}
+
+tr:hover {
+	background-color: #f5f5f5; /* Light grey background on hover */
+}
+
+/* Button styles */
+.btn-yellow {
+	background-color: #FFD700; /* Yellow color */
+	color: black;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 5px;
+	cursor: pointer;
+	font-weight: bold;
+	transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-yellow:hover {
+	background-color: #808080; /* Grey color on hover */
+	color: black; /* Black text on hover */
+}
+
+/* Present button hover effect */
+button[value="Present"]:hover {
+	background-color: #4CAF50; /* Green color */
+	color: white; /* White text */
+}
+
+/* Absent button hover effect */
+button[value="Absent"]:hover {
+	background-color: #F44336; /* Red color */
+	color: white; /* White text */
+}
+
+/* Footer styles */
+.footer {
+	text-align: center;
+	color: yellow;
+	padding: 10px 0;
+	background: rgba(0, 0, 0, 0.5);
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	z-index: 1000;
+}
+
+.footer p {
+	margin: 0;
+}
+
+/* Main content area */
+main {
+	padding: 20px;
+	overflow-y: auto; /* Make content scrollable */
+	max-height: calc(100vh - 240px);
+	/* Adjust to leave space for header and footer */
+}
+</style>
+</head>
+<body>
+	<!-- Header section -->
+	<div class="header">
+		<!-- School name in the top-left corner -->
+		<div class="school-name">
+			<span class="kids">Kids</span> <span class="garden">Garden
+				Grammar School</span>
+		</div>
+
+		<!-- User info and Logout button in the top-right corner -->
+		<div class="user-info">
+			Welcome back, <span th:text="${teacherName}">Teacher</span>!
+		</div>
+	</div>
+
+	<!-- Main content section -->
+	<main>
+		<!-- Container for the table -->
+		<div class="container">
+			<h2>Student List</h2>
+			
+			
+			<table>
+				<tr>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Attendance</th>
+					<th>History</th>
+				</tr>
+				<tr th:each="student : ${students}">
+					<td th:text="${student.name}"></td>
+					<td th:text="${student.email}"></td>
+					<td>
+						<form th:action="@{/teacher/attendance}" method="post">
+							<input type="hidden" name="studentId" th:value="${student.id}">
+							<input type="hidden" name="batchId" th:value="${batchId}">
+							<!-- Date Picker (Required) -->
+							<input type="date" name="date" required>
+							<button type="submit" class="btn-yellow" name="status"
+								value="Present">Present</button>
+							<button type="submit" class="btn-yellow" name="status"
+								value="Absent">Absent</button>
+						</form>
+					</td>
+					<td><a
+						th:href="@{/teacher/student-history/{studentId}(studentId=${student.id})}">
+							<button class="btn-yellow">View History</button>
+					</a></td>
+				</tr>
+			</table>
+		</div>
+	</main>
+
+	<!-- Footer -->
+	<footer class="footer">
+		<p>2008 - 2025 Kids Garden Grammar School All rights reserved.</p>
+	</footer>
+</body>
+</html>

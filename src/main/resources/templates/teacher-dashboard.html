@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+<style>
+/* General styles */
+body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	background: url('/images/dashboard-background.jpg') no-repeat center
+		center fixed;
+	background-size: cover;
+	color: #333;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	overflow-y: auto; /* Enable scrolling */
+}
+
+/* Header section */
+.header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	background: rgba(0, 0, 0, 0.5); /* Dark background color */
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 20px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+	z-index: 1000; /* Ensure it stays on top */
+	top: 0;
+}
+
+/* School name in the top-left corner */
+.school-name {
+	font-size: 22px;
+	font-weight: bold;
+}
+
+.school-name .kids {
+	color: #FFD700; /* Yellow color */
+}
+
+.school-name .garden {
+	color: white; /* White color */
+}
+
+/* User info section in the top-right corner */
+.user-info {
+	font-size: 20px;
+	font-weight: bold;
+	color: white;
+	padding-right: 20px;
+	display: flex;
+	align-items: center;
+}
+
+.user-info .logout-btn {
+	margin-left: 15px;
+	background-color: #FFD700;
+	color: black;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 5px;
+	cursor: pointer;
+	font-weight: bold;
+	transition: background-color 0.3s, color 0.3s;
+	margin-right: 20px;
+}
+
+.user-info .logout-btn:hover {
+	background-color: whilte;
+	color: black;
+}
+
+/* Container for the table and logout button */
+.container {
+	max-width: 800px;
+	margin: 120px auto 100px;
+	/* Adjusted margin-bottom to avoid footer overlap */
+	background-color: rgba(255, 255, 255, 0.9);
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	flex-grow: 1;
+	overflow-y: auto;
+	padding-bottom: 60px;
+}
+
+h3 {
+	text-align: center;
+	color: #444;
+}
+
+/* Table styles */
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 20px;
+}
+
+th, td {
+	padding: 13px;
+	text-align: center;
+	border-bottom: 1px solid #ddd;
+}
+
+th {
+	background-color: #343a40; /* Dark background for header */
+	color: white; /* White text for header */
+	font-weight: bold;
+	padding: 13px;
+	text-align: center;
+	border-bottom: 1px solid #ddd;
+}
+
+/* Add border radius to the first and last header cells */
+th:first-child {
+	border-top-left-radius: 10px; /* Rounded top-left corner */
+}
+
+th:last-child {
+	border-top-right-radius: 10px; /* Rounded top-right corner */
+}
+
+tr:hover {
+	background-color: #f5f5f5; /* Light grey background on hover */
+}
+
+/* Button styles */
+.btn-yellow {
+	background-color: #FFD700; /* Yellow color */
+	color: black;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 5px;
+	cursor: pointer;
+	font-weight: bold;
+	transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-yellow:hover {
+	background-color: #808080; /* Grey color on hover */
+	color: black; /* Black text on hover */
+}
+
+/* Footer styles */
+.footer {
+	text-align: center;
+	color: yellow;
+	padding: 10px 0;
+	background: rgba(0, 0, 0, 0.5);
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	z-index: 1000;
+}
+
+.footer p {
+	margin: 0;
+}
+</style>
+</head>
+<body>
+	<!-- Header section -->
+	<div class="header">
+		<!-- School name in the top-left corner -->
+		<div class="school-name">
+			<span class="kids">Kids</span> <span class="garden">Garden
+				Grammar School</span>
+		</div>
+
+		<!-- User info section in the top-right corner -->
+		<div class="user-info">
+			Welcome back, <span th:text="${teacherName}">Teacher</span>!
+			<form th:action="@{/teacher/logout}" method="get">
+				<button type="submit" class="logout-btn">Logout</button>
+			</form>
+		</div>
+	</div>
+
+	<!-- Container for the table and logout button -->
+	<div class="container">
+		<h3>Your Assigned Batches</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Batch Code</th>
+					<th>Batch Timing</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="batch : ${batches}">
+					<td th:text="${batch.batchcode}"></td>
+					<td th:text="${batch.startTime} + ' to ' + ${batch.endTime}"></td>
+					<td><a th:href="@{/teacher/students/{id}(id=${batch.id})}">
+							<button class="btn-yellow">View Students</button>
+					</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<!-- Footer -->
+	<footer class="footer">
+		<p>2008 - 2025 Kids Garden Grammar School All rights reserved.</p>
+	</footer>
+</body>
+</html>

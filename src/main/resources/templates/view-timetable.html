@@ -1,0 +1,16 @@
+<h2>Timetable for Teacher: <span th:text="${teacher.name}"></span></h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Batch Name</th>
+            <th>Batch Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="batch : ${batches}">
+            <td th:text="${batch.name}"></td>
+            <td th:text="${batch.time}"></td>
+        </tr>
+    </tbody>
+</table>

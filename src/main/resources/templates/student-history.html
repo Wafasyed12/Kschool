@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Attendance History</title>
+    <style>
+        /* General styles */
+        body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url('/images/dashboard-background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #333;
+    padding-bottom: 50px; /* Space for footer */
+}
+
+/* Header section */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Dark background color */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    z-index: 1000; /* Ensure it stays on top */
+}
+
+        /* School name in the top-left corner */
+      .school-name {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.school-name .kids {
+    color: #FFD700; /* Yellow color */
+}
+
+.school-name .garden {
+    color: white; /* White color */
+}
+
+
+        /* Header button container */
+        
+
+        /* Container for the table */
+        .container {
+    max-width: 1000px;
+    margin: 80px auto 0; /* Adjusted margin to accommodate the header */
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto; /* Enable vertical scrolling */
+    height: calc(100vh - 200px); /* Adjust height to avoid overlap with header and footer */
+}
+
+
+        h2 {
+            text-align: center;
+            color: #444;
+        }
+
+        /* Table styles */
+        table {
+    width: 100%;
+    border-collapse: collapse; /* Remove space between cells */
+    margin-bottom: 30px;
+    border-radius: 10px;
+    overflow: hidden; /* Ensure border-radius works */
+}
+
+th, td {
+    padding: 13px;
+    text-align: center;
+    border-bottom: 1px solid #ddd; /* Add bottom border to rows */
+}
+
+th {
+    background-color: #343a40; /* Dark background for header */
+    color: white; /* White text for header */
+    font-weight: bold;
+}
+
+/* Add border radius to the first and last header cells */
+th:first-child {
+    border-top-left-radius: 10px; /* Rounded top-left corner */
+}
+
+th:last-child {
+    border-top-right-radius: 10px; /* Rounded top-right corner */
+}
+
+tr:hover {
+    background-color: #f5f5f5; /* Light grey background on hover */
+}        /* Button styles */
+        
+       
+
+        /* Footer styles */
+        .footer {
+    text-align: center;
+    color: yellow;
+    padding: 10px 0;
+    background: rgba(0, 0, 0, 0.5);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.footer p {
+    margin: 0;
+}
+        /* Back to Student List Button Container */
+    </style>
+</head>
+<body>
+    <!-- Header section -->
+    <div class="header">
+        <!-- School name in the top-left corner -->
+        <div class="school-name">
+            <span class="kids">Kids</span> <span class="garden">Garden Grammar School</span>
+        </div>
+
+        <!-- Header buttons (Back to Student List and Logout) -->
+        
+            
+        </div>
+    </div>
+
+    <!-- Container for the table -->
+    <div class="container">
+        <h2>Attendance History Of <span th:text="${studentName}"></span></h2>
+        
+        <div th:if="${latestAttendanceDate != null}">
+            <p><strong>Latest Attendance Date:</strong> <span th:text="${latestAttendanceDate}"></span></p>
+        </div>
+
+        <!-- Table without border -->
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Status</th>
+            </tr>
+            <tr th:each="attendance : ${attendanceList}">
+                <td th:text="${attendance.date}"></td>
+                <td th:text="${attendance.status}"></td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>2008 - 2025 Kids Garden Grammar School All rights reserved.</p>
+    </footer>
+</body>
+</html>
